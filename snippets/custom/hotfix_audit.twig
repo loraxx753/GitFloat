@@ -1,0 +1,10 @@
+{% if result.ahead_by %}
+	<h3 class="text-center">There are <b>{{ result.ahead_by }}</b> hotfixes that are on production but haven't been merged into dev.</h3>
+	{% for commit in result.commits %}
+		{{ commit }}
+	{% endfor %}
+
+{% else %}
+	<p class="text-center"><img src="../assets/img/jake.gif"></p>
+	<p class="text-center">There are no commits that haven't been merged into dev.</p>
+{% endif %}

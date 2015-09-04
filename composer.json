@@ -1,0 +1,16 @@
+{
+	"require": {
+		"knplabs/github-api": "~1.4",
+		"twig/twig" : "~1.0"
+
+	},
+	"require-dev": {
+		"phpdocumentor/phpdocumentor": "2.*"		
+	},
+	"autoload": {
+		"psr-4": {
+			"GitFloat\\": "lib/GitFloat/"
+		}
+	}
+
+}

@@ -1,0 +1,5 @@
+vendor/*
+config/dev/config.json
+config/prod/config.json
+vagrant/.vagrant
+._*
