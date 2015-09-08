@@ -3,6 +3,7 @@ jQuery.extend({
         $("#"+id+" button").on("click", function(e) {
             e.preventDefault();
             var postData = {};
+            postData.author = $(this).closest(".widget").data('author');
             $("#results").slideUp(function() {
                 $(".loading").show();
                 postData.request = id;
@@ -28,9 +29,11 @@ jQuery.extend({
 
         if(typeof values == 'object') {
             for (i in values) {
-                postData[values[i]] = values[i];
+                console.log(i);
+                postData[i] = values[i];
             }
         }
+        console.log(postData);
         $.post("./", postData, function(data) {
             if(callback) {
                 callback(data);

@@ -1,7 +1,8 @@
 {
 	"require": {
 		"knplabs/github-api": "~1.4",
-		"twig/twig" : "~1.0"
+		"twig/twig" : "~1.0",
+		"tedivm/jshrink": "~1.0"
 
 	},
 	"require-dev": {
@@ -9,7 +10,8 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"GitFloat\\": "lib/GitFloat/"
+			"GitFloat\\": "lib/GitFloat/",
+			"Loraxx753\\": "app/import/Loraxx753/classes/"
 		}
 	}
 

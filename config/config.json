@@ -1,3 +1,15 @@
 {
-  
+	"widgets" : {
+		"dashboard" : [
+			"Loraxx753/commit_audit",
+			"Loraxx753/compare_branch",
+			"Loraxx753/hotfix_audit"
+		],
+		"jira" : [
+			"Loraxx753/compare_branch",
+			"Loraxx753/commit_audit",
+			"Loraxx753/hotfix_audit"
+		]
+
+	}
 }

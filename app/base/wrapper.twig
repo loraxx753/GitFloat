@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset=utf-8 />
+	<title></title><!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="/assets/css/styles.css">
+	<link rel="stylesheet" href="/assets/css/styles.css">
+
+	<!-- Latest compiled and minified JavaScript -->
+</head>
+<body role="document">
+
+	<!-- Fixed navbar -->
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">GitFloat</a>
+			</div>
+			<div id="navbar" class="navbar-collapse collapse">
+				{% if access_token %}
+				<ul class="nav navbar-nav navbar-right">
+					<li><p class="navbar-text">{{ user.name }}</p></li>
+					<li><a href="/login.php?action=logout">Logout</a></li>
+				</ul>
+				{% else %}
+				<ul class="nav navbar-nav navbar-right">
+					<li class="navbar-right"><a href="/login.php?action=login">Sign in</a></li>
+				</ul>
+				{% endif %}
+			</div><!--/.nav-collapse -->
+		</div>
+	</nav>
+
+	<div class="container theme-showcase" role="main">
+	<div class="page-header">
+	  <h1>GitFloat <small>Tearing it up since 2015</small></h1>
+	</div>
+{% if access_token %}
+	<div class="row">
+		<div class="col-md-12">
+			<form id="drilldown" class="form-inline text-center">
+				<select class="form-control" id="organizations">
+					<option> {{ organization ? organization : 'Loading' }} </option>
+				</select> / <select class="form-control" id="repos">
+					<option> {{ repo ? repo : ' --- ' }} </option>
+				</select>
+			</form>
+		</div>
+	</div>
+	<div class="row" id="topRow">
+		{% for widget in widgets %}
+		<div class="col-md-4 widget" data-author="{{ widget.author }}">
+			{% include widget.file %}
+		</div>
+		{% endfor %}
+	</div>
+{% else %}
+	<div class="row">
+		<div class="col-md-12">
+			<h2>What is GitFloat?</h2>
+			<p>GitFloat is a reporting applicaiton that takes your organizations GitHub Repositories and makes neet little reports with the commits.</p>
+
+			<p>So far, the following widgets are available</p>
+
+			<div class="list-group">
+				<div class="list-group-item">
+					<h4 class="list-group-item-heading">Commit Audit</h4>
+					<p class="list-group-item-text">Feed this a regex and it will show you the commits that are following that regex and the commits that aren't. Pretty useful when you're commits need to match ticket numbers.</p>
+				</div>
+				<div class="list-group-item">
+					<h4 class="list-group-item-heading">Branch Differ</h4>
+					<p class="list-group-item-text">Takes two branches and highlights the commits that are on one, but not the other.</p>
+				</div>
+				<div class="list-group-item">
+					<h4 class="list-group-item-heading">Hotfix Audit</h4>
+					<p class="list-group-item-text">Feed your production branch and your development branch in and it will point out commits that are on your production branch but haven't yet been merged into your development branch.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endif %}
+	<div class="row loading">
+		<h1 style="text-align: center;">
+			<span class="glyphicon glyphicon-cog spin-glyph" aria-hidden="true"></span>
+			<span class="glyphicon glyphicon-plus spin-glyph" aria-hidden="true"></span>
+			<span class="glyphicon glyphicon-asterisk spin-glyph" aria-hidden="true"></span>
+			<span class="glyphicon glyphicon-off spin-glyph" aria-hidden="true"></span>
+			<span class="glyphicon glyphicon-fullscreen spin-glyph" aria-hidden="true"></span>
+		</h1>
+	</div>
+	<div class='row' id='results'>
+	</div>
+</div>
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="/assets/js/lib/Widget.js"></script>
+<script src="/assets/js/lib/base.js"></script>
+<script src="/assets/js/{{ page }}/minify.js"></script>
+
+</body>
+</html>
