@@ -1,6 +1,6 @@
 jQuery.extend({
     widget : function(id, values, callback) {
-        $("#"+id+" button").on("click", function(e) {
+        $("#"+id+" button[type=submit]").on("click", function(e) {
             $this = $(this);
             e.preventDefault();
             var postData = {};
