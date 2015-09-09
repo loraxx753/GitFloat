@@ -14,22 +14,30 @@ namespace GitFloat;
  */
 abstract class Base_Processor {
 
-	public $client;
+	public $github;
 
-	function __construct() {
-		$this->client = new \Github\Client();
-		$this->client->authenticate($_SESSION['access_token'], null, \Github\Client::AUTH_HTTP_TOKEN);
-		$this->client->getHttpClient()->setOption('user_agent', 'GitFloat');
-		
+	protected function use_github() {
+		$this->github = new \Github\Client();
+		$this->github->authenticate($_SESSION['access_token'], null, \Github\Client::AUTH_HTTP_TOKEN);
+		$this->github->getHttpClient()->setOption('user_agent', 'GitFloat');
+	}
+
+	protected function use_twig() {
 		$loaders = array();
 		$explodedClassName = explode("\\", get_called_class());
-		$namespace = array_shift($explodedClassName);
+		array_pop($explodedClassName);
+		$explodedClassName[1] = strtolower($explodedClassName[1]);
+		$namespace = implode("/", $explodedClassName);
 
-		$loaders[] = new \Twig_Loader_Filesystem(APP_DIR.'/import/'.$namespace.'/html/output');
+		$loaders[] = new \Twig_Loader_Filesystem(APP_DIR.'/import/'.$namespace.'/html/');
 		$loaders[] = new \Twig_Loader_Filesystem(APP_DIR.'/base');
 		$loader = new \Twig_Loader_Chain($loaders);
 
 		$this->twig = new \Twig_Environment($loader, array('autoescape' => false, 'debug' => true));
+	}
+
+	private function use_jira() {
+
 	}
 
 	public function run_error_page($exception) {

@@ -1,0 +1,33 @@
+#!/usr/bin/env php
+<?php
+
+session_start();
+ini_set('display_errors',1);
+date_default_timezone_set("America/Chicago");
+define('ROOT_DIR', dirname(__FILE__));
+define('APP_DIR', dirname(__FILE__)."/app");
+define('LIB_DIR', dirname(__FILE__)."/lib");
+define('PUBLIC_DIR', dirname(__FILE__)."/public");
+require_once(ROOT_DIR.'/vendor/autoload.php');
+
+$contents = file_get_contents('composer.json');
+
+$parsed = json_decode($contents);
+
+$parsed->autoload->{'psr-4'};
+
+$pages = \GitFloat\Config::get('widgets');
+
+foreach($pages as $page) {
+	foreach($page as $widget) {
+		$parts = explode("/", $widget);
+		$author = $parts[0];
+		$name = $parts[1];
+		$namespace = str_replace("/", "\\", ucwords($widget, '/_-'))."\\";
+		$parsed->autoload->{'psr-4'}->$namespace = "app/import/$author/$name/classes/";
+	}
+}
+
+file_put_contents('composer.json', json_encode($parsed, JSON_PRETTY_PRINT));
+
+shell_exec('./composer.phar update');

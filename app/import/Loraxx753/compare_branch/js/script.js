@@ -1,0 +1,1 @@
+$.widget('compare_branch', ['compareCommitsFrom', 'compareCommitsTo']);
