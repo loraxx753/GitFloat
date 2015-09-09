@@ -55,8 +55,9 @@ if(session('access_token')) {
   header('Location: http://' . $_SERVER['SERVER_NAME']);
   die();
 } else {
-  echo '<h3>Not logged in</h3>';
-  echo '<p><a href="?action=login">Log In</a></p>';
+  echo "<h3>$_GET[error]</h3>";
+  echo "<p>$_GET[error_description]</p>";
+  echo "<p><a href='$_GET[error_uri]'>Error Link</a></p>";
 }
 function apiRequest($url, $post=FALSE, $headers=array()) {
   $ch = curl_init($url);
