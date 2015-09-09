@@ -7,16 +7,22 @@
  * @author    Kevin Baugh
  */
 
-namespace Loraxx753;
+namespace Loraxx753\Commit_Audit;
 
 /**
  * Processes the requests from process.php
  */
 class Processor extends \GitFloat\Base_Processor {
 
-	public function run_commit_audit($auditSince, $branch, $commitRegex = false) {
-		$repo = $this->client->api('repo')->commits();
-		$paginator  = new \Github\ResultPager($this->client);
+	function __construct() {
+		$this->use_github();
+		$this->use_twig();
+
+	}
+
+	public function run($auditSince, $branch, $commitRegex = false) {
+		$repo = $this->github->api('repo')->commits();
+		$paginator  = new \Github\ResultPager($this->github);
 		$parameters = array($_SESSION['organization'], $_SESSION['repo'], array('sha' => $branch, 'since' => $auditSince));
 		$results    = $paginator->fetchAll($repo, 'all', $parameters);
 
@@ -43,49 +49,8 @@ class Processor extends \GitFloat\Base_Processor {
 			}
 		} 
 
-		return $this->twig->render('commit_audit.twig', 
+		return $this->twig->render('output.twig', 
 							array('commits' => $commits));
-	}
-
-	public function run_hotfix_audit() {
-	 	$result = $this->client->api('repos')->commits()->compare($_SESSION['organization'], $_SESSION['repo'], 'dev', 'master');
-		$commits = array();
-		foreach ($result['commits'] as $commit) {
-			$commits[] = $this->parse_commit($commit);
-		}
-		$result['commits'] = $commits;
-
-		return $this->twig->render('hotfix_audit.twig', array(
-							'result' => $result));
-	}
-
-	public function run_compare($compareCommitsFrom = 'dev', $compareCommitsTo = 'master') {
-
-		$result = $this->client->api('repos')->commits()->compare($_SESSION['organization'], $_SESSION['repo'], $compareCommitsTo, $compareCommitsFrom);
-		$commits = array();
-		foreach ($result['commits'] as $commit) {
-			$commits[] = $this->parse_commit($commit);
-		}
-		array_reverse($commits);
-		$result['commits'] = $commits;
-
-		return $this->twig->render('compare_branch.twig',
-							array('result' => $result,
-								'compareCommitsFrom' => $compareCommitsFrom,
-								'compareCommitsTo' => $compareCommitsTo));
-	}
-
-	public function run_find_organizations() {
-		$orgs = $this->client->api('current_user')->organizations();
-		echo "<option>".htmlspecialchars(" -- Select an Organization -- ")."</option>";
-		foreach ($orgs as $org) {
-			if($_SESSION['organization'] == $org['login']) {
-				echo "<option selected='selected'>$_SESSION[organization]</option>";
-			}
-			else {
-				echo "<option value='$org[login]'>$org[login]</option>";
-			}
-		}
 	}
 
 	private function parse_commit($commit) {
@@ -98,5 +63,4 @@ class Processor extends \GitFloat\Base_Processor {
 								  'heading' => $heading,
 								  'content' => $content));
 	}
-
 }

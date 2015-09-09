@@ -19,20 +19,37 @@ function compress( $minify )
 }
 
 if($_POST) {
-	$author = $_POST['author'];
-	$call = "run_".$_POST['request'];
-	unset($_POST['request']);
-	unset($_POST['author']);
+	if($_POST['author'] == 'GitFloat') {
+		$author = $_POST['author'];
+		$call = "run_".$_POST['request'];
+		$class = "\\".ucwords($author)."\\Processor";
 
-	$class = "\\".ucwords($author)."\\Processor";
+		$processor = new $class();
+		unset($_POST['request']);
+		unset($_POST['author']);
 
-	$processor = new $class();
 
-	try { 
-		echo call_user_func_array(array($processor, $call), array_filter($_POST));
-	} catch(Exception $e) {
-		echo $processor->run_error_page($e);
+		try { 
+			echo call_user_func_array(array($processor, $call), array_filter($_POST));
+		} catch(Exception $e) {
+			echo $processor->run_error_page($e);
+		}
+	} else {
+		$namespace = ucwords($_POST['author'])."\\".ucwords($_POST['request'], "_");
+		unset($_POST['request']);
+		unset($_POST['author']);
+
+		$class = $namespace."\\Processor";
+
+		$processor = new $class();
+		try { 
+			echo call_user_func_array(array($processor, 'run'), array_filter($_POST));
+		} catch(Exception $e) {
+			echo $processor->run_error_page($e);
+		}
+
 	}
+
 } else if(isset($_GET['args']) && strpos($_GET['args'], "minify.js") !== false) {
 	$parts = explode("/", $_GET['args']);
 	$page = $parts[1];
@@ -42,7 +59,7 @@ if($_POST) {
 
 	foreach ($findWidgets as $foundWidget) {
 		$parts = explode("/", $foundWidget);
-		$widgets .= file_get_contents(APP_DIR."/import/".$parts[0]."/js/".$parts[1].".js");
+		$widgets .= @file_get_contents(APP_DIR."/import/".$parts[0]."/".$parts[1]."/js/"."script.js");
 	}
 	echo \JShrink\Minifier::minify($widgets);
 
@@ -53,13 +70,13 @@ if($_POST) {
 	$widgets = "";
 
 
-	// header('Content-type: text/css');
-	// ob_start("compress");
+	header('Content-type: text/css');
+	ob_start("compress");
 	foreach ($findWidgets as $foundWidget) {
 		$parts = explode("/", $foundWidget);
 		@include(APP_DIR."/import/".$parts[0]."/css/".$parts[1].".css");
 	}
-	// ob_end_flush();
+	ob_end_flush();
 } else { 
 		$loaders = array();
 
@@ -68,16 +85,13 @@ if($_POST) {
 		$page = (isset($_GET['page'])) ? $_GET['page'] : \GitFloat\Config::get('homepage');
 
 		$findWidgets = \GitFloat\Config::get('widgets');
-
+		$loader = new Twig_Loader_Filesystem(APP_DIR."/base");
 		foreach ($findWidgets->{$page} as $foundWidget) {
 			$parts = explode("/", $foundWidget);
-			$loaders[] = new \Twig_Loader_Filesystem(APP_DIR."/import/".$parts[0]."/html/widgets");
-			$widgets[] = array("file" => $parts[1].".twig", "author" => $parts[0]); 
+			$loader->addPath(APP_DIR."/import/".$parts[0]."/".$parts[1]."/html/", str_replace("/", "_", $foundWidget));
+			$widgets[] = array("file" => "@".str_replace("/", "_", $foundWidget)."/widget.twig", "author" => $parts[0]); 
 
 		}
-
-		$loader = new \Twig_Loader_Chain($loaders);
-
 		$twig = new \Twig_Environment($loader, array('autoescape' => false, 'debug' => true));
 
 		$access_token = (isset($_SESSION['access_token'])) ? $_SESSION['access_token'] : false;
