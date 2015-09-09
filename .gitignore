@@ -3,3 +3,4 @@ config/dev/config.json
 config/prod/config.json
 vagrant/.vagrant
 ._*
+composer.lock
