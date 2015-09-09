@@ -9,7 +9,7 @@ body {
 .details {
 	display: none;
 }
-#results, .loading {
+.loading {
 	display: none;
 }
 

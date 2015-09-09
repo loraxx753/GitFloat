@@ -16,10 +16,6 @@ class Processor {
 
 	public $client;
 
-	public static function forge() {
-		return new self();
-	}
-
 	function __construct() {
 		$this->client = new \Github\Client();
 		$this->client->authenticate($_SESSION['access_token'], null, \Github\Client::AUTH_HTTP_TOKEN);

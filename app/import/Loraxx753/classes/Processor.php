@@ -12,26 +12,7 @@ namespace Loraxx753;
 /**
  * Processes the requests from process.php
  */
-class Processor {
-
-	public $client;
-
-	public static function forge() {
-		return new self();
-	}
-
-	function __construct() {
-		$this->client = new \Github\Client();
-		$this->client->authenticate($_SESSION['access_token'], null, \Github\Client::AUTH_HTTP_TOKEN);
-		$this->client->getHttpClient()->setOption('user_agent', 'GitFloat');
-		
-		$loaders = array();
-		$loaders[] = new \Twig_Loader_Filesystem(APP_DIR.'/import/'.__NAMESPACE__.'/html/output');
-		$loaders[] = new \Twig_Loader_Filesystem(APP_DIR.'/base');
-		$loader = new \Twig_Loader_Chain($loaders);
-
-		$this->twig = new \Twig_Environment($loader, array('autoescape' => false, 'debug' => true));
-	}
+class Processor extends \GitFloat\Base_Processor {
 
 	public function run_commit_audit($auditSince, $branch, $commitRegex = false) {
 		$repo = $this->client->api('repo')->commits();
@@ -105,35 +86,6 @@ class Processor {
 				echo "<option value='$org[login]'>$org[login]</option>";
 			}
 		}
-	}
-
-	public function run_set_organization($org) {
-		// unset($_SESSION['organization']);
-		$_SESSION['organization'] = $org;
-	}
-
-	public function run_set_repo($repo) {
-		// unset($_SESSION['repo']);
-		$_SESSION['repo'] = $repo;
-
-	}
-
-	public function run_find_repos($organization) {
-		$repos = $this->client->api('organizations')->repositories($organization);
-		var_dump($repos);
-		echo "<option>".htmlspecialchars(" -- Select an Repository -- ")."</option>";
-		foreach ($repos as $repo) {
-			if($_SESSION['repo'] == $repo['name']) {
-				echo "<option selected='selected'>$_SESSION[repo]</option>";
-			}
-			else {
-				echo "<option value='$repo[name]'>$repo[name]</option>";
-			}
-		}
-	}
-
-	public function run_error_page($exception) {
-		return $exception->getMessage();
 	}
 
 	private function parse_commit($commit) {

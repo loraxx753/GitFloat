@@ -16,7 +16,7 @@ if($_POST) {
 
 	$class = "\\".ucwords($author)."\\Processor";
 
-	$processor = $class::forge();
+	$processor = new $class();
 
 	try { 
 		echo call_user_func_array(array($processor, $call), array_filter($_POST));
@@ -33,7 +33,7 @@ else if(isset($_GET['args']) && strpos($_GET['args'], "minify.js") !== false) {
 
 	foreach ($findWidgets as $foundWidget) {
 		$parts = explode("/", $foundWidget);
-		$widgets .= file_get_contents(PUBLIC_DIR."/assets/js/import/".$parts[0]."/".$parts[1].".js");
+		$widgets .= file_get_contents(APP_DIR."/import/".$parts[0]."/js/".$parts[1].".js");
 	}
 	echo \JShrink\Minifier::minify($widgets);
 
@@ -42,18 +42,17 @@ else if(isset($_GET['args']) && strpos($_GET['args'], "minify.js") !== false) {
 
 		$loaders[] = new \Twig_Loader_Filesystem(APP_DIR."/base");
 
-		$page = (isset($_GET['page'])) ? $_GET['page'] : 'dashboard';
+		$page = (isset($_GET['page'])) ? $_GET['page'] : \GitFloat\Config::get('homepage');
 
-		$findWidgets = \GitFloat\Config::get(array('widgets', $page));
-		$widgets = array();
+		$findWidgets = \GitFloat\Config::get('widgets');
 
-
-		foreach ($findWidgets as $foundWidget) {
+		foreach ($findWidgets->{$page} as $foundWidget) {
 			$parts = explode("/", $foundWidget);
 			$loaders[] = new \Twig_Loader_Filesystem(APP_DIR."/import/".$parts[0]."/html/widgets");
 			$widgets[] = array("file" => $parts[1].".twig", "author" => $parts[0]); 
 
 		}
+
 		$loader = new \Twig_Loader_Chain($loaders);
 
 		$twig = new \Twig_Environment($loader, array('autoescape' => false, 'debug' => true));
@@ -69,6 +68,8 @@ else if(isset($_GET['args']) && strpos($_GET['args'], "minify.js") !== false) {
 										'page' => $page,
 										'repo' => $repo,
 										'organization' => $organization,
-										'widgets' => $widgets
+										'widgets' => $widgets,
+										'pages' => array_keys(get_object_vars($findWidgets)),
+										'homepage' => \GitFloat\Config::get('homepage')
 										));
 } ?>

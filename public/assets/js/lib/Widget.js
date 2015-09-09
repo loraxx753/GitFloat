@@ -4,22 +4,20 @@ jQuery.extend({
             e.preventDefault();
             var postData = {};
             postData.author = $(this).closest(".widget").data('author');
-            $("#results").slideUp(function() {
-                $(".loading").show();
-                postData.request = id;
-                if(values) {
-                    for (i in values) {
-                        postData[values[i]] = $("#"+values[i]).val();
-                    }
+            $(".loading").show();
+            postData.request = id;
+            if(values) {
+                for (i in values) {
+                    postData[values[i]] = $("#"+values[i]).val();
                 }
-                $.post("./", postData, function(data) {
-                    $(".loading").hide();
-                    $("#results").html(data);
-                    $("#results").slideDown();
-                    if(callback) {
-                        callback();
-                    }
-                });
+            }
+            $.post("./", postData, function(data) {
+                $(".loading").hide();
+                $("#results").html(data);
+                if(callback) {
+                    callback();
+                }
+                $('#myModal').modal();
             });
         });
     },
@@ -29,11 +27,9 @@ jQuery.extend({
 
         if(typeof values == 'object') {
             for (i in values) {
-                console.log(i);
                 postData[i] = values[i];
             }
         }
-        console.log(postData);
         $.post("./", postData, function(data) {
             if(callback) {
                 callback(data);
