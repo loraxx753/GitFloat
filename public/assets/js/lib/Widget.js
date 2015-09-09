@@ -1,24 +1,26 @@
 jQuery.extend({
     widget : function(id, values, callback) {
-        $("#"+id+" button").on("click", function(e) {
+        $("#"+id+" button[type=submit]").on("click", function(e) {
+            $this = $(this);
             e.preventDefault();
             var postData = {};
-            $("#results").slideUp(function() {
-                $(".loading").show();
-                postData.request = id;
-                if(values) {
-                    for (i in values) {
-                        postData[values[i]] = $("#"+values[i]).val();
-                    }
+            postData.author = $(this).closest(".widget").data('author');
+            $(".loading").show();
+            postData.request = id;
+            if(values) {
+                for (i in values) {
+                    postData[values[i]] = $("#"+values[i]).val();
                 }
-                $.post("./", postData, function(data) {
-                    $(".loading").hide();
-                    $("#results").html(data);
-                    $("#results").slideDown();
-                    if(callback) {
-                        callback();
-                    }
-                });
+            }
+            $.post("./", postData, function(data) {
+                var panelName = $this.closest('.panel-info').children('.panel-heading').children('.panel-title').html();
+                $("#results-header h4").html(panelName);
+                $(".loading").hide();
+                $("#results").html(data);
+                if(callback) {
+                    callback();
+                }
+                $('#myModal').modal();
             });
         });
     },
@@ -28,7 +30,7 @@ jQuery.extend({
 
         if(typeof values == 'object') {
             for (i in values) {
-                postData[values[i]] = values[i];
+                postData[i] = values[i];
             }
         }
         $.post("./", postData, function(data) {

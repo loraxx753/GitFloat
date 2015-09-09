@@ -9,10 +9,9 @@ body {
 .details {
 	display: none;
 }
-#results, .loading {
+.loading {
 	display: none;
 }
-
 #drilldown {
     padding: 15px 0;
 }
