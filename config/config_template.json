@@ -1,11 +1,11 @@
 {
 	"widgets" : {
-		"home" : [
-			"Loraxx753/commit_audit",
-			"Loraxx753/compare_branch",
-			"Loraxx753/hotfix_audit"
+		"PAGENAME" : [
+			"AUTHOR/WIDGET_NAME"
+			"AUTHOR/WIDGET_NAME",
+			"AUTHOR/WIDGET_NAME"
 		]
 
 	},
-	"homepage" : "home"
+	"homepage" : "HOMEPAGE_NAME"
 }
