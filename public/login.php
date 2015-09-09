@@ -17,7 +17,7 @@ if(get('action') == 'login') {
   unset($_SESSION['access_token']);
   $params = array(
     'client_id' => OAUTH2_CLIENT_ID,
-    'redirect_uri' => 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'],
+    'redirect_uri' => 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'],
     'scope' => 'user, repo',
     'state' => $_SESSION['state']
   );
@@ -27,7 +27,7 @@ if(get('action') == 'login') {
 }
 else if(get('action') == 'logout') {
 	session_destroy();
-	header('Location: http://' . $_SERVER['SERVER_NAME']);
+	header('Location: http://' . $_SERVER['HTTP_HOST']);
 	die();
 
 }
@@ -42,7 +42,7 @@ if(get('code')) {
   $token = apiRequest($tokenURL, array(
     'client_id' => OAUTH2_CLIENT_ID,
     'client_secret' => OAUTH2_CLIENT_SECRET,
-    'redirect_uri' => 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'],
+    'redirect_uri' => 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'],
     'state' => $_SESSION['state'],
     'code' => get('code')
   ));
@@ -52,7 +52,7 @@ if(get('code')) {
 if(session('access_token')) {
   $user = apiRequest($apiURLBase . 'user');
   $_SESSION['user'] = $user;
-  header('Location: http://' . $_SERVER['SERVER_NAME']);
+  header('Location: http://' . $_SERVER['HTTP_HOST']);
   die();
 } else {
   echo "<h3>$_GET[error]</h3>";
