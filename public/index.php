@@ -7,6 +7,16 @@ define('APP_DIR', dirname(__FILE__)."/../app");
 define('LIB_DIR', dirname(__FILE__)."/../lib");
 define('PUBLIC_DIR', dirname(__FILE__));
 require_once(ROOT_DIR.'/vendor/autoload.php');
+function compress( $minify ) 
+{
+	/* remove comments */
+	$minify = preg_replace( '!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', $minify );
+
+    /* remove tabs, spaces, newlines, etc. */
+	$minify = str_replace( array("\r\n", "\r", "\n", "\t", '  ', '    ', '    '), '', $minify );
+		
+    return $minify;
+}
 
 if($_POST) {
 	$author = $_POST['author'];
@@ -23,8 +33,7 @@ if($_POST) {
 	} catch(Exception $e) {
 		echo $processor->run_error_page($e);
 	}
-}
-else if(isset($_GET['args']) && strpos($_GET['args'], "minify.js") !== false) {
+} else if(isset($_GET['args']) && strpos($_GET['args'], "minify.js") !== false) {
 	$parts = explode("/", $_GET['args']);
 	$page = $parts[1];
 	$findWidgets = \GitFloat\Config::get(array('widgets', $page));
@@ -37,6 +46,20 @@ else if(isset($_GET['args']) && strpos($_GET['args'], "minify.js") !== false) {
 	}
 	echo \JShrink\Minifier::minify($widgets);
 
+ } else if(isset($_GET['args']) && strpos($_GET['args'], "minify.css") !== false) {
+	$parts = explode("/", $_GET['args']);
+	$page = $parts[1];
+	$findWidgets = \GitFloat\Config::get(array('widgets', $page));
+	$widgets = "";
+
+
+	// header('Content-type: text/css');
+	// ob_start("compress");
+	foreach ($findWidgets as $foundWidget) {
+		$parts = explode("/", $foundWidget);
+		@include(APP_DIR."/import/".$parts[0]."/css/".$parts[1].".css");
+	}
+	// ob_end_flush();
 } else { 
 		$loaders = array();
 

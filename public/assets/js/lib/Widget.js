@@ -1,6 +1,7 @@
 jQuery.extend({
     widget : function(id, values, callback) {
         $("#"+id+" button").on("click", function(e) {
+            $this = $(this);
             e.preventDefault();
             var postData = {};
             postData.author = $(this).closest(".widget").data('author');
@@ -12,6 +13,8 @@ jQuery.extend({
                 }
             }
             $.post("./", postData, function(data) {
+                var panelName = $this.closest('.panel-info').children('.panel-heading').children('.panel-title').html();
+                $("#results-header h4").html(panelName);
                 $(".loading").hide();
                 $("#results").html(data);
                 if(callback) {

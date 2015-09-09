@@ -8,7 +8,7 @@
 	<!-- Optional theme -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 	<link rel="stylesheet" href="/assets/css/styles.css">
-	<link rel="stylesheet" href="/assets/css/styles.css">
+	<link rel="stylesheet" href="/assets/css/{{ page }}/minify.css">
 
 	<!-- Latest compiled and minified JavaScript -->
 </head>
@@ -100,9 +100,15 @@
 			<span class="glyphicon glyphicon-fullscreen spin-glyph" aria-hidden="true"></span>
 		</h1>
 	</div>
-<div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
   <div class="modal-dialog modal-lg">
-    <div class="modal-content" id="results">
+    <div class="modal-content">
+		<div class="modal-header" id="results-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title">Modal title</h4>
+		</div>
+	    <div class="modal-body" id="results">
+	   	</div>
     </div>
   </div>
 </div>
