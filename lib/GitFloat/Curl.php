@@ -1,9 +1,9 @@
 <?php
 /**
- * Flosports Webdriver is the workhorse for Facebook's Selenium bindings to contol Flosports sites. 
+ * GitFloat is an easy reporter for Git projects that can be extended to handle other applications as well. 
  * 
- * @package   Flosports WebDriver
- * @version   0.1
+ * @package   GitFloat WebDriver
+ * @version   0.2
  * @author    Kevin Baugh
  */
 
@@ -15,8 +15,9 @@ namespace GitFloat;
 class Curl {
 	/**
 	 * Run the actual curl command
-	 * @param  array  $options Array of options to send to curl
-	 * @return array           The response from curl
+	 * @param  array  $options     Array of options to send to curl
+	 * @param  array  $return_json Whether to return the response as json (default false)
+	 * @return array               The response from curl
 	 */
 	private static function run($options, $return_json)
 	{
@@ -37,9 +38,10 @@ class Curl {
 	}
 
 	/**
-	 * Issue a GET request
-	 * @param  string $url        Where to issue it
-	 * @param  array  $subOptions Any custom options
+	 * Issue a GET request 
+	 * @param  string $url         Where to issue it
+	 * @param  array  $subOptions  Any custom options
+	 * @param  array  $return_json Whether to return the response as json (default false) 
 	 * @return array 
 	 */
 	public static function get($url = '', $subOptions = null, $return_json=false)
@@ -62,8 +64,9 @@ class Curl {
 	
 	/**
 	 * Issue a DELETE request
-	 * @param  string $url        Where to issue it
-	 * @param  array  $subOptions Any custom options
+	 * @param  string $url         Where to issue it
+	 * @param  array  $subOptions  Any custom options
+	 * @param  array  $return_json Whether to return the response as json (default false)
 	 * @return array 
 	 */
 	public static function delete($url = '', $subOptions = null, $return_json=false)
@@ -87,9 +90,10 @@ class Curl {
 
 	/**
 	 * Issue a PATCH request
-	 * @param  string $url        Where to issue it
-	 * @param  array  $postData   The post data to send
-	 * @param  array  $subOptions Any custom options
+	 * @param  string $url         Where to issue it
+	 * @param  array  $postData    The post data to send
+	 * @param  array  $subOptions  Any custom options
+	 * @param  array  $return_json Whether to return the response as json (default false)
 	 * @return array
 	 */
 	public static function patch($url = '', $postData = null, $subOptions = null, $return_json=false) 
@@ -118,9 +122,10 @@ class Curl {
 
 	/**
 	 * Issue a PUT request
-	 * @param  string $url        Where to issue it
-	 * @param  array  $postData   The post data to send
-	 * @param  array  $subOptions Any custom options
+	 * @param  string $url         Where to issue it
+	 * @param  array  $postData    The post data to send
+	 * @param  array  $subOptions  Any custom options
+	 * @param  array  $return_json Whether to return the response as json (default false)
 	 * @return array
 	 */
 	public static function put($url = '', $postData = null, $subOptions = null, $return_json=false) 
@@ -149,9 +154,10 @@ class Curl {
 
 	/**
 	 * Issue a POST request
-	 * @param  string $url        Where to issue it
-	 * @param  array  $postData   The post data to send
-	 * @param  array  $subOptions Any custom options
+	 * @param  string $url         Where to issue it
+	 * @param  array  $postData    The post data to send
+	 * @param  array  $subOptions  Any custom options
+	 * @param  array  $return_json Whether to return the response as json (default false)
 	 * @return array
 	 */
 	public static function post($url = '', $postData = null, $subOptions = null, $return_json=false) 
@@ -178,6 +184,6 @@ class Curl {
 				$options[$key] = $value;
 			}
 		}
-		var_dump(self::run($options, $return_json));
+		return self::run($options, $return_json);
 	}
 }

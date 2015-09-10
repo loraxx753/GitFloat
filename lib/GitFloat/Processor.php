@@ -1,29 +1,32 @@
 <?php
 /**
- * GitFloat Webdriver is the workhorse for Facebook's Selenium bindings to contol GitFloat sites. 
+ * GitFloat is an easy reporter for Git projects that can be extended to handle other applications as well. 
  * 
  * @package   GitFloat WebDriver
- * @version   0.1
+ * @version   0.2
  * @author    Kevin Baugh
  */
 
 namespace GitFloat;
 
 /**
- * Processes the requests from process.php
+ * Default processor to handle organizations and repos.
  */
-class Processor {
+class Processor extends Base_Processor {
 
-	public $client;
-
+	/**
+	 * By default use github.
+	 */
 	function __construct() {
-		$this->client = new \Github\Client();
-		$this->client->authenticate($_SESSION['access_token'], null, \Github\Client::AUTH_HTTP_TOKEN);
-		$this->client->getHttpClient()->setOption('user_agent', 'GitFloat');
+		$this->use_github();
 	}
 
+	/**
+	 * Find all the organizations for the current user
+	 * @return string Html options for orgs
+	 */
 	public function run_find_organizations() {
-		$orgs = $this->client->api('current_user')->organizations();
+		$orgs = $this->github->api('current_user')->organizations();
 		echo "<option>".htmlspecialchars(" -- Select an Organization -- ")."</option>";
 		foreach ($orgs as $org) {
 			if($_SESSION['organization'] == $org['login']) {
@@ -35,14 +38,22 @@ class Processor {
 		}
 	}
 
+	/**
+	 * Sets the organization to the session
+	 * @param  string $org Organization name
+	 * @return null
+	 */
 	public function run_set_organization($org) {
-		// unset($_SESSION['organization']);
 		$_SESSION['organization'] = $org;
 	}
 
+	/**
+	 * Finds repos for the selected organization
+	 * @param  string $organization Organization name
+	 * @return string Html options for repos
+	 */
 	public function run_find_repos($organization) {
-		$repos = $this->client->api('organizations')->repositories($organization);
-		var_dump($repos);
+		$repos = $this->github->api('organizations')->repositories($organization);
 		echo "<option>".htmlspecialchars(" -- Select an Repository -- ")."</option>";
 		foreach ($repos as $repo) {
 			if($_SESSION['repo'] == $repo['name']) {
@@ -54,13 +65,13 @@ class Processor {
 		}
 	}
 
+	/**
+	 * Sets the repository to the session
+	 * @param  string $org Repository name
+	 * @return null
+	 */
 	public function run_set_repo($repo) {
-		// unset($_SESSION['repo']);
 		$_SESSION['repo'] = $repo;
 
-	}
-	
-	public function run_error_page($exception) {
-		return $exception->getMessage();
 	}
 }

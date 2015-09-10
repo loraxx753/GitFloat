@@ -1,16 +1,16 @@
 <?php
 /**
- * GitFloat Webdriver is the workhorse for Facebook's Selenium bindings to contol GitFloat sites. 
+ * Compare branch takes two branches and finds commits on one that aren't on another. 
  * 
- * @package   GitFloat WebDriver
- * @version   0.1
+ * @package   GitFloat
+ * @version   1.0
  * @author    Kevin Baugh
  */
 
 namespace Loraxx753\Compare_Branch;
 
 /**
- * Processes the requests from process.php
+ * Processes the compare branch request
  */
 class Processor extends \GitFloat\Base_Processor {
 
@@ -20,6 +20,12 @@ class Processor extends \GitFloat\Base_Processor {
 
 	}
 
+	/**
+	 * Rungs the branch compare between two branches
+	 * @param  string $compareCommitsFrom Branch with latest information
+	 * @param  string $compareCommitsTo   Branch with NOT lastest information
+	 * @return string                     Twig response
+	 */
 	public function run($compareCommitsFrom = 'dev', $compareCommitsTo = 'master') {
 
 		$result = $this->github->api('repos')->commits()->compare($_SESSION['organization'], $_SESSION['repo'], $compareCommitsTo, $compareCommitsFrom);
@@ -27,6 +33,7 @@ class Processor extends \GitFloat\Base_Processor {
 		foreach ($result['commits'] as $commit) {
 			$commits[] = $this->parse_commit($commit);
 		}
+		// Have to reverse so it's latest first.
 		array_reverse($commits);
 		$result['commits'] = $commits;
 
@@ -35,7 +42,11 @@ class Processor extends \GitFloat\Base_Processor {
 								'compareCommitsFrom' => $compareCommitsFrom,
 								'compareCommitsTo' => $compareCommitsTo));
 	}
-
+	/**
+	 * Makes the commits pretty
+	 * @param  array   $commit The contents of the commit
+	 * @return string          Twig response
+	 */
 	private function parse_commit($commit) {
 		$avatar = (isset($commit['author']['avatar_url'])) ? $commit['author']['avatar_url'] : "/assets/img/placeholder.jpg";
 		$heading = $commit['commit']['author']['name']." - ".date("m-d-Y @ h:i a", strtotime($commit['commit']['author']['date']));
