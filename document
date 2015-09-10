@@ -1,7 +1,7 @@
 # YOU CAN FIND COLORS AND WHAT NOT AT http://misc.flogisoft.com/bash/tip_colors_and_formatting
 
 echo -e -n "\033[33mCreating documentation"
-./vendor/bin/phpdoc -d ./Flosports/ -t ./docs > /dev/null 2>&1 &
+./vendor/bin/phpdoc -d ./app/import -d ./lib -t ./docs > /dev/null 2>&1 &
 pid=$!
 
 while kill -0 $pid 2> /dev/null; do 
