@@ -1,16 +1,16 @@
 <?php
 /**
- * GitFloat Webdriver is the workhorse for Facebook's Selenium bindings to contol GitFloat sites. 
+ * Hotfix Audit looks for commits that are on production that aren't on the development branch. 
  * 
- * @package   GitFloat WebDriver
- * @version   0.1
+ * @package   GitFloat
+ * @version   1.0
  * @author    Kevin Baugh
  */
 
-namespace Loraxx753\Compare_Branch;
+namespace Loraxx753\Hotfix_Audit;
 
 /**
- * Processes the requests from process.php
+ * Processes the hotfix audit request
  */
 class Processor extends \GitFloat\Base_Processor {
 
@@ -20,6 +20,10 @@ class Processor extends \GitFloat\Base_Processor {
 
 	}
 
+	/**
+	 * Runs the hotfix audit request
+	 * @return string Twig response
+	 */
 	public function run() {
 	 	$result = $this->github->api('repos')->commits()->compare($_SESSION['organization'], $_SESSION['repo'], 'dev', 'master');
 		$commits = array();
@@ -31,7 +35,11 @@ class Processor extends \GitFloat\Base_Processor {
 		return $this->twig->render('hotfix_audit.twig', array(
 							'result' => $result));
 	}
-
+	/**
+	 * Makes the commits pretty
+	 * @param  array   $commit The contents of the commit
+	 * @return string          Twig response
+	 */
 	private function parse_commit($commit) {
 		$avatar = (isset($commit['author']['avatar_url'])) ? $commit['author']['avatar_url'] : "/assets/img/placeholder.jpg";
 		$heading = $commit['commit']['author']['name']." - ".date("m-d-Y @ h:i a", strtotime($commit['commit']['author']['date']));
