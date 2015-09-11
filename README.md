@@ -72,3 +72,7 @@ You need to set up an [application account](https://github.com/settings/applicat
 ## Finishing Up
 
 Once everything is set, simply run `./build` from the root directory and you'll be good to go!
+
+# Developer Documentation
+
+If you'd like to create your own widgets, contribute to the codebase, or generally just pick everything apart, please see the [wiki](https://github.com/loraxx753/GitFloat/wiki) for more information.
