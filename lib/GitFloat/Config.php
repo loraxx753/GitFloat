@@ -45,8 +45,8 @@ class Config {
 	 * @return string The environment name
 	 */
 	static function get_env() {
-		if(getenv('APPLICATION_ENV')) {
-			return getenv('APPLICATION_ENV');
+		if(getenv('APP_ENV')) {
+			return getenv('APP_ENV');
 		} 
 		return 'dev';
 	}
