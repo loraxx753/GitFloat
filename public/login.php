@@ -1,9 +1,14 @@
 <?php 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *
+ *  THIS IS A SLIGHT MODIFICATION OF https://gist.github.com/aaronpk/3612742 by https://github.com/aaronpk  
+ *  
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 session_start();
-ini_set('display_errors',1);
-date_default_timezone_set("America/Chicago");
 define('ROOT_DIR', dirname(__FILE__)."/..");
 require_once(ROOT_DIR.'/vendor/autoload.php');
+date_default_timezone_set(\GitFloat\Config::get('timezone'));
 
 define('OAUTH2_CLIENT_ID', \GitFloat\Config::get(array('github', 'client_id')));
 define('OAUTH2_CLIENT_SECRET', \GitFloat\Config::get(array('github', 'client_secret')));

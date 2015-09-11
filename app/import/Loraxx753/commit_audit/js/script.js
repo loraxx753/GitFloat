@@ -9,14 +9,18 @@ $.widget("commit_audit", ['auditSince', 'auditSinceBranch', 'commitRegex'], func
 	});
 });
 
+// Load the regex if it's been saved
 if(localStorage.commitRegex) {
 	$("#commitRegex").val(localStorage.commitRegex);
 }
+// Trigger a popup if they save the regex
 $(".commit-audit-save-regex").popover({
 	trigger : 'manual',
 	content : 'Saved!',
 	delay   : { 'show' : 0, 'hide' : 500} 
 });
+
+// Save the regex to localStorage
 $(".commit-audit-save-regex").on('click', function(e) {
 	$this = $(this);
 	localStorage.setItem('commitRegex', $("#commitRegex").val());

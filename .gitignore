@@ -5,3 +5,5 @@ vagrant/.vagrant
 ._*
 composer.lock
 config/config.json
+docs/*
+!docs/.gitkeep

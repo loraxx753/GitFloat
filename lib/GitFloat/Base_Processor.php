@@ -1,37 +1,67 @@
 <?php
 /**
- * GitFloat Webdriver is the workhorse for Facebook's Selenium bindings to contol GitFloat sites. 
+ * GitFloat is an easy reporter for Git projects that can be extended to handle other applications as well. 
  * 
  * @package   GitFloat WebDriver
- * @version   0.1
+ * @version   0.2
  * @author    Kevin Baugh
  */
 
 namespace GitFloat;
 
 /**
- * Processes the requests from process.php
+ * The base processor for all widgets
  */
 abstract class Base_Processor {
 
-	public $client;
+	/**
+	 * Holds the GitHub object
+	 * @var \Github\Client
+	 */
+	public $github;
 
-	function __construct() {
-		$this->client = new \Github\Client();
-		$this->client->authenticate($_SESSION['access_token'], null, \Github\Client::AUTH_HTTP_TOKEN);
-		$this->client->getHttpClient()->setOption('user_agent', 'GitFloat');
-		
+	/**
+	 * Holds the twig object for view rendering
+	 * @var \Twig_Environment
+	 */
+	public $twig;
+
+
+	/**
+	 * Sets up the GitHub object with the current access token
+	 * @return null
+	 */
+	protected function use_github() {
+		$this->github = new \Github\Client();
+		$this->github->authenticate($_SESSION['access_token'], null, \Github\Client::AUTH_HTTP_TOKEN);
+		$this->github->getHttpClient()->setOption('user_agent', 'GitFloat');
+	}
+
+	/**
+	 * Sets up the twig object with the widgets html folder
+	 * 
+	 * @return null
+	 */
+	protected function use_twig() {
 		$loaders = array();
 		$explodedClassName = explode("\\", get_called_class());
-		$namespace = array_shift($explodedClassName);
+		array_pop($explodedClassName);
+		$explodedClassName[1] = strtolower($explodedClassName[1]);
+		$namespace = implode("/", $explodedClassName);
 
-		$loaders[] = new \Twig_Loader_Filesystem(APP_DIR.'/import/'.$namespace.'/html/output');
+		$loaders[] = new \Twig_Loader_Filesystem(APP_DIR.'/import/'.$namespace.'/html/');
 		$loaders[] = new \Twig_Loader_Filesystem(APP_DIR.'/base');
 		$loader = new \Twig_Loader_Chain($loaders);
 
 		$this->twig = new \Twig_Environment($loader, array('autoescape' => false, 'debug' => true));
 	}
 
+	/**
+	 * Returns and error message when hitting an exception
+	 * 
+	 * @param  object $exception The exception object from the bad processor call
+	 * @return string            The message from the bad call
+	 */
 	public function run_error_page($exception) {
 		return $exception->getMessage();
 	}

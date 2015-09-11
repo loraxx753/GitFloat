@@ -1,16 +1,16 @@
 <?php
 /**
- * GitFloat is a . 
+ * GitFloat is an easy reporter for Git projects that can be extended to handle other applications as well. 
  * 
- * @package   GitFloat
- * @version   0.1
- * @author    Flosports
+ * @package   GitFloat WebDriver
+ * @version   0.2
+ * @author    Kevin Baugh
  */
 
 namespace GitFloat;
 
 /**
- * Class to handle configuration information. Hi Kristen!
+ * Class to handle configuration information.
  */
 class Config {
 	/**
@@ -40,6 +40,10 @@ class Config {
 		}
 	}
 
+	/**
+	 * Get the environment set on the server. Default is dev
+	 * @return string The environment name
+	 */
 	static function get_env() {
 		if(getenv('APP_ENV')) {
 			return getenv('APP_ENV');
