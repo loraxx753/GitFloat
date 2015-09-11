@@ -31,7 +31,7 @@ foreach($pages as $page) {
 		$name = $parts[1];
 		$namespace = str_replace("/", "\\", ucwords($widget, '/_-'))."\\";
 		$parsed->autoload->{'psr-4'}->$namespace = "app/import/$author/$name/classes/";
-		shell_exec("git clone -b $name https://github.com/$author/GitFloat-Widgets ./app/import/$author/$name");
+		shell_exec("git clone -b ".$name."_".\GitFloat\Config::get_env()." https://github.com/$author/GitFloat-Widgets ./app/import/$author/$name");
 	}
 }
 
