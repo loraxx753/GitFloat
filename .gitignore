@@ -7,3 +7,5 @@ composer.lock
 config/config.json
 docs/*
 !docs/.gitkeep
+app/import/*
+!app/import/.gitkeep

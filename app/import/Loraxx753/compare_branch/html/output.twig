@@ -1,9 +1,0 @@
-{% if result.ahead_by %}
-	<h3 class="text-center">There are <b>{{ result.ahead_by }}</b> commits on <b>{{ compareCommitsFrom }}</b> that aren't on <b>{{ compareCommitsTo }}</b>.</h3>
-	{% for commit in result.commits %}
-		{{ commit }}
-	{% endfor %}
-{% else %}
-	<h3 class="text-center">There are no commits on <b>{{ compareCommitsFrom }}</b> that aren't on <b>{{ compareCommitsTo }}</b>.</h3>
-	<p class="text-center"><img src="../assets/img/ooooooh.gif"></p>
-{% endif %}
