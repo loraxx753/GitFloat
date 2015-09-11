@@ -2,6 +2,8 @@
 
 GitFloat is a git reporter for GitHub that allows you to see various reports about your organization's github repositories through user defined widgets in a GUI like environment.
 
+[Here's a basic example](http://gitfloat.kevinbaugh.com) of what GitFloat looks like.
+
 ## Getting Started
 
 GitFloat is easy to install, with very few real requirements.
