@@ -1,1 +1,0 @@
-$.widget('hotfix_audit');
