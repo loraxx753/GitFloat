@@ -37,7 +37,7 @@ You would end up with a file at `/config/config.json` with the following:
 There are a few components to this:
 
 * `"widgets"` is your main list of widgets, broken up by `"PAGENAME"`.
- * Each `"PAGENAME"` represents a list of widgets you would like on that page
+ * Each `"PAGENAME"` represents a list of widgets you would like on that page (so for example `"home" {}, "stats" {}` )
   * `"AUTHOR/WIDGET_NAME"` maps to the widgets found in your `/app/import` folder.
 * `"homepage"` is the page you would like mapped to `/`. It will not show on the nav bar and will instead be navigated to by clicking the "GitFloat" banner.
 * `"timezone"` is what timezone you would like GitFloat to show, please see PHP's [list of timezones](http://php.net/manual/en/timezones.php) for what to put here.
