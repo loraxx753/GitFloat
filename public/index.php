@@ -118,7 +118,7 @@ if($_POST) {
 		// Set those twigs up.
 		$twig = new \Twig_Environment($loader, array('autoescape' => false, 'debug' => true));
 
-		$access_token = (isset($_SESSION['access_token'])) ? $_SESSION['access_token'] : false;
+		$access_token = \GitFloat\Auth::find_access_token('github');
 		$organization = (isset($_SESSION['organization'])) ? $_SESSION['organization'] : false;
 		$repo = (isset($_SESSION['repo'])) ? $_SESSION['repo'] : false;
 		$user = (isset($_SESSION['user'])) ? $_SESSION['user'] : false;

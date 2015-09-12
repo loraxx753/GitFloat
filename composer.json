@@ -9,7 +9,9 @@
     },
     "autoload": {
         "psr-4": {
-            "GitFloat\\": "lib\/GitFloat\/",
+            "Loraxx753\\Commit_Audit\\": "app\/import\/Loraxx753\/commit_audit\/classes\/",
+            "Loraxx753\\Compare_Branch\\": "app\/import\/Loraxx753\/compare_branch\/classes\/",
+            "Loraxx753\\Hotfix_Audit\\": "app\/import\/Loraxx753\/hotfix_audit\/classes\/"
         }
     }
 }

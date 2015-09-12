@@ -181,7 +181,12 @@ class Curl {
 		{
 			foreach($subOptions as $key => $value)
 			{
-				$options[$key] = $value;
+				if(is_array($options[$key])) {
+					$options[$key] = array_merge($options[$key], $subOptions[$key]);
+				}
+				else {
+					$options[$key] = $value;
+				}
 			}
 		}
 		return self::run($options, $return_json);

@@ -33,7 +33,7 @@ abstract class Base_Processor {
 	 */
 	protected function use_github() {
 		$this->github = new \Github\Client();
-		$this->github->authenticate($_SESSION['access_token'], null, \Github\Client::AUTH_HTTP_TOKEN);
+		$this->github->authenticate($_SESSION['oauth']['github']['access_token'], null, \Github\Client::AUTH_HTTP_TOKEN);
 		$this->github->getHttpClient()->setOption('user_agent', 'GitFloat');
 	}
 
