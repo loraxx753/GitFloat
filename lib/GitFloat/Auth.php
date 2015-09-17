@@ -12,18 +12,22 @@ namespace GitFloat;
 /**
  * The base processor for all widgets
  */
-class Auth {
+abstract class Auth {
 
-	protected $_client_id;
-	protected $_client_secret;
-	protected $_redirect_uri;
-	protected $_scope = false;
-	protected $_agent;
+	protected $_params = array();
 
+	function __construct($config) {
+
+		foreach($config as $key => $value) {
+			$this->_params[$key] = $value;
+		}
+	}
 
 	public function destroy() {
 		unset($_SESSION['oauth']);
 	}
+
+	public function get_access_token() {}
 
 	public static function find_access_token($provider = false) {
 		if(isset($_SESSION['oauth']))

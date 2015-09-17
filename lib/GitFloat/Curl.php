@@ -27,6 +27,8 @@ class Curl {
 		{
 			curl_setopt($ch, $constant, $param);
 		}
+		curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+
 		// grab URL and pass it to the browser
 		$dump = curl_exec($ch);
 		// close cURL resource, and free up system resources

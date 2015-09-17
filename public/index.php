@@ -30,7 +30,6 @@ function compress( $minify )
 		
     return $minify;
 }
-
 // If there's a post
 if($_POST) {
 	// And the author is GitFloat

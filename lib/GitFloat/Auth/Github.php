@@ -14,33 +14,24 @@ use \GitFloat\Curl;
 /**
  * The base processor for all widgets
  */
-class  Github extends \GitFloat\Auth{
+class  Github extends \GitFloat\Auth {
 
 	private $_authorizeURL = 'https://github.com/login/oauth/authorize';
 	private $_tokenURL = 'https://github.com/login/oauth/access_token';
 
-	function __construct($config) {
-
-		foreach($config as $key => $param) {
-			$key = "_$key";
-			$this->$key = $param;
-		}
-	}
-
 	public function get_access_token() {
 		if($this->check_code()) {
 			$response = Curl::post($this->_tokenURL, array(
-				'client_id' => $this->_client_id,
-				'client_secret' => $this->_client_secret,
-				'redirect_uri' => $this->_redirect_uri,
+				'client_id' => $this->_params['client_id'],
+				'client_secret' => $this->_params['client_secret'],
+				'redirect_uri' => $this->_params['redirect_uri'],
 				'state' => $_SESSION['state'],
 				'code' => $_GET['code']
 			), array(CURLOPT_HTTPHEADER => array('Accept: application/json')), true);
 			$_SESSION['oauth']['github']['access_token'] = $response->access_token;
-			return true;
 		}
 		else {
-			return false;
+			$this->get_code();
 		}
 
 
@@ -48,9 +39,9 @@ class  Github extends \GitFloat\Auth{
 
 	public function get_code() {
 		$params = array(
-			'client_id' => $this->_client_id,
-			'redirect_uri' => $this->_redirect_uri,
-			'scope' => $this->_scope,
+			'client_id' => $this->_params['client_id'],
+			'redirect_uri' => $this->_params['redirect_uri'],
+			'scope' => $this->_params['scope'],
 			'state' => $this->create_state()
 		);
 		$_SESSION['state'] = $params['state'];
