@@ -29,7 +29,7 @@ abstract class Auth {
 
 	public function get_access_token() {}
 
-	public static function find_access_token($provider = false) {
+	public static function find_access_tokens($provider = false) {
 		if(isset($_SESSION['oauth']))
 		{
 			if($provider) 

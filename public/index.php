@@ -12,6 +12,7 @@ define('PUBLIC_DIR', dirname(__FILE__));
 //Load up composer
 require_once(ROOT_DIR.'/vendor/autoload.php');
 
+
 // Set the timezone from the config
 date_default_timezone_set(\GitFloat\Config::get('timezone'));
 
@@ -117,7 +118,7 @@ if($_POST) {
 		// Set those twigs up.
 		$twig = new \Twig_Environment($loader, array('autoescape' => false, 'debug' => true));
 
-		$access_token = \GitFloat\Auth::find_access_token('github');
+		$access_token = \GitFloat\Auth::find_access_tokens();
 		$organization = (isset($_SESSION['organization'])) ? $_SESSION['organization'] : false;
 		$repo = (isset($_SESSION['repo'])) ? $_SESSION['repo'] : false;
 		$user = (isset($_SESSION['user'])) ? $_SESSION['user'] : false;
