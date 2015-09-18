@@ -1,6 +1,18 @@
 {
 	"github" : {
 		"client_id" :  "GITHUB_APP_CLIENT_ID",
-		"client_secret" :  "GITHUB_APP_CLIENT_SECRET"
+		"client_secret" :  "GITHUB_APP_CLIENT_SECRET",
+		"redirect_uri" : "http://gitfloat.dev/login.php",
+		"scope" : "user, repo"
+	},
+	"twitter" : {
+		"consumer_key" : "TWITTER_CONSUMER_KEY",
+		"consumer_secret" : "TWITTER_CONSUMER_SECRET",
+		"oauth_callback" : "http://gitfloat.dev/login.php"
+	},
+	"facebook" : {
+		"app_id" : "FACEBOOK_APP_ID",
+		"app_secret" : "FACEBOOK_APP_SECRET",
+		"api_version" : "v2.4"
 	}
 }

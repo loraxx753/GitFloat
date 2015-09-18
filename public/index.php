@@ -12,7 +12,6 @@ define('PUBLIC_DIR', dirname(__FILE__));
 //Load up composer
 require_once(ROOT_DIR.'/vendor/autoload.php');
 
-
 // Set the timezone from the config
 date_default_timezone_set(\GitFloat\Config::get('timezone'));
 
@@ -51,9 +50,10 @@ if($_POST) {
 			echo $processor->run_error_page($e);
 		}
 	} else {
-		$namespace = ucwords($_POST['author'])."\\".ucwords($_POST['request'], "_");
+		$namespace = ucwords($_POST['author'])."\\".ucwords($_POST['auth'])."\\".ucwords($_POST['request'], "_");
 		unset($_POST['request']);
 		unset($_POST['author']);
+		unset($_POST['auth']);
 
 		$class = $namespace."\\Processor";
 
@@ -76,6 +76,7 @@ if($_POST) {
 	// Get the js for all the registered widgets for the current page.
 	foreach ($findWidgets as $foundWidget) {
 		$parts = explode("/", $foundWidget);
+		$parts[1] = preg_replace('/\_/', '/', $parts[1], 1);
 		$widgets .= @file_get_contents(APP_DIR."/import/".$parts[0]."/".$parts[1]."/js/"."script.js");
 	}
 	// Minify and show it.
@@ -93,6 +94,7 @@ if($_POST) {
 	// Same thing as the js, just for css.
 	foreach ($findWidgets as $foundWidget) {
 		$parts = explode("/", $foundWidget);
+		$parts[1] = preg_replace('/\_/', '/', $parts[1], 1);
 		@include(APP_DIR."/import/".$parts[0]."/css/".$parts[1].".css");
 	}
 	ob_end_flush();
@@ -110,9 +112,16 @@ if($_POST) {
 		// Go through every registered html location and add the twigs from there
 		foreach ($findWidgets->{$page} as $foundWidget) {
 			$parts = explode("/", $foundWidget);
+			$exploded = explode("_", $parts[1]);
+			$auth = array_shift($exploded);
+			$parts[1] = $auth."/".implode("_", $exploded);
 			$loader->addPath(APP_DIR."/import/".$parts[0]."/".$parts[1]."/html/", str_replace("/", "_", $foundWidget));
 			// get the widget twig for each registered widget for the page.
-			$widgets[] = array("file" => "@".str_replace("/", "_", $foundWidget)."/widget.twig", "author" => $parts[0]); 
+			$widgets[] = array(
+				"file" => "@".str_replace("/", "_", $foundWidget)."/widget.twig", 
+				"author" => $parts[0],
+				"auth" => $auth
+			); 
 
 		}
 		// Set those twigs up.

@@ -3,8 +3,9 @@
         "knplabs\/github-api": "~1.4",
         "twig\/twig": "~1.0",
         "tedivm\/jshrink": "~1.0",
-        "abraham/twitteroauth" : "0.6.0",
-        "facebook/php-sdk-v4": "~5.0"
+        "abraham\/twitteroauth": "0.6.0",
+        "facebook\/php-sdk-v4": "~5.0",
+        "google\/apiclient": "1.0.*@beta"
     },
     "require-dev": {
         "phpdocumentor\/phpdocumentor": "2.*"
@@ -12,9 +13,10 @@
     "autoload": {
         "psr-4": {
             "GitFloat\\": "lib\/GitFloat",
-            "Loraxx753\\Commit_Audit\\": "app\/import\/Loraxx753\/commit_audit\/classes\/",
-            "Loraxx753\\Compare_Branch\\": "app\/import\/Loraxx753\/compare_branch\/classes\/",
-            "Loraxx753\\Hotfix_Audit\\": "app\/import\/Loraxx753\/hotfix_audit\/classes\/"
+            "Loraxx753\\Github\\Commit_Audit\\": "app\/import\/Loraxx753\/github\/commit_audit\/classes\/",
+            "Loraxx753\\Github\\Compare_Branch\\": "app\/import\/Loraxx753\/github\/compare_branch\/classes\/",
+            "Loraxx753\\Github\\Hotfix_Audit\\": "app\/import\/Loraxx753\/github\/hotfix_audit\/classes\/",
+            "Custom\\Google\\Daily_Tracker\\": "app\/import\/Custom\/google\/daily_tracker\/classes\/"
         }
     }
 }

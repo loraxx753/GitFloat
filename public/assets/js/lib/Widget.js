@@ -15,6 +15,7 @@ jQuery.extend({
             var postData = {};
             // Get the author from data-author of the widget
             postData.author = $(this).closest(".widget").data('author');
+            postData.auth = $(this).closest(".widget").data('auth');
             $(".loading").show();
             postData.request = id;
             // Add the valuse to the postData

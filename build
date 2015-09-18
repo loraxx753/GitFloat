@@ -16,9 +16,6 @@ $contents = file_get_contents('composer.json');
 // Turn it to php
 $parsed = json_decode($contents);
 
-// Find the psr-4 stuff
-$parsed->autoload->{'psr-4'};
-
 // Get our widgets
 $pages = \GitFloat\Config::get('widgets');
 
@@ -28,13 +25,16 @@ foreach($pages as $page) {
 	foreach($page as $widget) {
 		$parts = explode("/", $widget);
 		$author = $parts[0];
-		$name = $parts[1];
-		$namespace = str_replace("/", "\\", ucwords($widget, '/_-'))."\\";
-		$parsed->autoload->{'psr-4'}->$namespace = "app/import/$author/$name/classes/";
-		shell_exec("git clone -b $name https://github.com/$author/GitFloat-Widgets ./app/import/$author/$name");
+		$branch = explode("_", $parts[1]);
+		$auth = array_shift($branch);
+		$name = implode("_", $branch);
+		$namespace = str_replace("/", "\\", ucwords($author."/".$auth."/".$name, '/_-'))."\\";
+		$parsed->autoload->{'psr-4'}->$namespace = "app/import/$author/$auth/$name/classes/";
+		if($author != "Custom") {
+			shell_exec("git clone -b ".$auth."_".$name." https://github.com/$author/GitFloat-Widgets ./app/import/$author/$auth/$name");
+		}
 	}
 }
-
 // Save the json
 file_put_contents('composer.json', json_encode($parsed, JSON_PRETTY_PRINT));
 

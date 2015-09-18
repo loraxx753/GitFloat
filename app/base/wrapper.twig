@@ -44,7 +44,7 @@
 									<i class="fa fa-github"></i> Github
 								</a>
 							</li>
-							<li><a class="btn btn-block btn-social btn-google">
+							<li><a href="login.php?provider=google" class="btn btn-block btn-social btn-google">
 									<i class="fa fa-google"></i> Google
 								</a>
 							</li>
@@ -83,7 +83,7 @@
 	</div>
 	<div class="row" id="topRow">
 		{% for widget in widgets %}
-		<div class="col-md-4 widget" data-author="{{ widget.author }}">
+		<div class="col-md-4 widget" data-author="{{ widget.author }}" data-auth="{{ widget.auth }}">
 			{% include widget.file %}
 		</div>
 		{% endfor %}
