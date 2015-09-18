@@ -108,20 +108,23 @@ if($_POST) {
 
 		// Add the base html snippets
 		$loader = new Twig_Loader_Filesystem(APP_DIR."/base");
+		$widgets = array();
 
 		// Go through every registered html location and add the twigs from there
 		foreach ($findWidgets->{$page} as $foundWidget) {
 			$parts = explode("/", $foundWidget);
 			$exploded = explode("_", $parts[1]);
 			$auth = array_shift($exploded);
-			$parts[1] = $auth."/".implode("_", $exploded);
-			$loader->addPath(APP_DIR."/import/".$parts[0]."/".$parts[1]."/html/", str_replace("/", "_", $foundWidget));
-			// get the widget twig for each registered widget for the page.
-			$widgets[] = array(
-				"file" => "@".str_replace("/", "_", $foundWidget)."/widget.twig", 
-				"author" => $parts[0],
-				"auth" => $auth
-			); 
+			if(isset($_SESSION['oauth'][$auth])) {
+				$parts[1] = $auth."/".implode("_", $exploded);
+				$loader->addPath(APP_DIR."/import/".$parts[0]."/".$parts[1]."/html/", str_replace("/", "_", $foundWidget));
+				// get the widget twig for each registered widget for the page.
+				$widgets[] = array(
+					"file" => "@".str_replace("/", "_", $foundWidget)."/widget.twig", 
+					"author" => $parts[0],
+					"auth" => $auth
+				); 
+			}
 
 		}
 		// Set those twigs up.
