@@ -47,7 +47,7 @@ abstract class Base_Processor {
 		$explodedClassName = explode("\\", get_called_class());
 		array_pop($explodedClassName);
 		$explodedClassName[1] = strtolower($explodedClassName[1]);
-		$explodedClassName[1] = strtolower($explodedClassName[2]);
+		$explodedClassName[2] = strtolower($explodedClassName[2]);
 		$namespace = implode("/", $explodedClassName);
 
 		$loaders[] = new \Twig_Loader_Filesystem(APP_DIR.'/import/'.$namespace.'/html/');
