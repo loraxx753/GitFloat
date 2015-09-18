@@ -116,7 +116,7 @@ if($_POST) {
 			$exploded = explode("_", $parts[1]);
 			$auth = array_shift($exploded);
 			if(isset($_SESSION['oauth'][$auth])) {
-				$parts[1] = $auth."/".implode("_", $exploded);
+				$parts[1] = $auth."/".strtolower(implode("_", $exploded));
 				$loader->addPath(APP_DIR."/import/".$parts[0]."/".$parts[1]."/html/", str_replace("/", "_", $foundWidget));
 				// get the widget twig for each registered widget for the page.
 				$widgets[] = array(
