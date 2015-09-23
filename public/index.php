@@ -56,11 +56,16 @@ if($_POST) {
 		unset($_POST['auth']);
 
 		$class = $namespace."\\Processor";
+		$call = "";
+
+		if(isset($_POST['call'])) {
+			$call = "_".$_POST['call'];
+		}
 
 		$processor = new $class();
 		// instead of \Author\Widget_Name\Processor::run()
 		try { 
-			echo call_user_func_array(array($processor, 'run'), array_filter($_POST));
+			echo call_user_func_array(array($processor, 'run'.$call), array_filter($_POST));
 		} catch(Exception $e) {
 			echo $processor->run_error_page($e);
 		}

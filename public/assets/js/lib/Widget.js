@@ -50,7 +50,20 @@ jQuery.extend({
      */
     getInfo : function(request, values, callback) {
         var postData = {};
-        postData.request = request;
+        var splitted = request.split("\.");
+        if(splitted.length > 1) {
+            postData.author = splitted[0];
+            postData.auth = splitted[1];
+            postData.request = splitted[2];
+            if(splitted[3]) {
+                postData.call = splitted[3];
+            }
+        }
+        else {
+            postData.request = request;
+        }
+
+        console.log(postData);
 
         if(typeof values == 'object') {
             for (i in values) {
