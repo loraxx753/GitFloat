@@ -21,8 +21,8 @@ class Google extends \GitFloat\Auth {
 		parent::__construct($config);
 
 		$this->google = new \Google_Client();
-		$this->google->setClientId(Config::get(array('google', 'client_id')));
-	    $this->google->setClientSecret(Config::get(array('google', 'client_secret')));
+		$this->google->setClientId(Config::get('google.client_id'));
+	    $this->google->setClientSecret(Config::get('google.client_secret'));
 		$this->google->addScope(\Google_Service_Drive::DRIVE_METADATA_READONLY);
 		$this->google->setRedirectUri('http://' . $_SERVER['HTTP_HOST'] . '/login.php');
 

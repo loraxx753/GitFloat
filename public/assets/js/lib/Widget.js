@@ -63,8 +63,6 @@ jQuery.extend({
             postData.request = request;
         }
 
-        console.log(postData);
-
         if(typeof values == 'object') {
             for (i in values) {
                 postData[i] = values[i];

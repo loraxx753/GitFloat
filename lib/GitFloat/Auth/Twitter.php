@@ -37,7 +37,7 @@ class  Twitter extends \GitFloat\Auth {
 			}
 		}
 		else {
-			$access_token = $this->twitter->oauth("oauth/request_token", array("oauth_callback" => Config::get(array('twitter', 'oauth_callback'))));
+			$access_token = $this->twitter->oauth("oauth/request_token", array("oauth_callback" => Config::get('twitter.oauth_callback')));
 
 			$_SESSION['oauth_token'] = $access_token['oauth_token'];
 			$_SESSION['oauth_token_secret'] = $request_token['oauth_token_secret'];

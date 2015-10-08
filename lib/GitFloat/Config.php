@@ -27,17 +27,13 @@ class Config {
 	 */
 	static function get($item) {
 		self::load();
-		if(is_array($item)) {
-			$currentScope = self::$_config;
-			foreach ($item as $key) {
-				$currentScope = $currentScope->$key;
-			}
+		$pieces = explode(".", $item);
+		$currentScope = self::$_config;
+		foreach ($pieces as $piece) {
+			$currentScope = $currentScope->$piece;
+		}
 
-			return $currentScope;
-		}
-		else {
-			return self::$_config->$item;
-		}
+		return $currentScope;
 	}
 
 	/**

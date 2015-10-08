@@ -75,7 +75,7 @@ if($_POST) {
 } else if(isset($_GET['args']) && strpos($_GET['args'], "minify.js") !== false) {
 	$parts = explode("/", $_GET['args']);
 	$page = $parts[1];
-	$findWidgets = \GitFloat\Config::get(array('widgets', $page));
+	$findWidgets = \GitFloat\Config::get('widgets.'.$page);
 	$widgets = "";
 
 	// Get the js for all the registered widgets for the current page.
@@ -90,7 +90,7 @@ if($_POST) {
 } else if(isset($_GET['args']) && strpos($_GET['args'], "minify.css") !== false) {
 	$parts = explode("/", $_GET['args']);
 	$page = $parts[1];
-	$findWidgets = \GitFloat\Config::get(array('widgets', $page));
+	$findWidgets = \GitFloat\Config::get('widgets.'.$page);
 	$widgets = "";
 
 
